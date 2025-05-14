@@ -30,37 +30,51 @@ export default defineEventHandler(async (event) => {
 
   // ----- ESTE ES EL PROMPT, LA PARTE MÁS IMPORTANTE -----
   const prompt = `
-    Eres un asistente experto en nutrición infantil especializado en niños de 1 a 5 años.
-    He extraído el siguiente menú mensual de una guardería:
-    --- MENÚ GUARDERÍA ---
-    ${menuTextFromPDF}
-    --- FIN MENÚ GUARDERÍA ---
+   Eres un asistente experto en nutrición infantil especializado en niños de 1 a 5 años.
+He extraído el siguiente menú de una guardería. Aunque el menú proporcionado pueda ser semanal, necesito que generes un plan de comidas complementarias para **UN MES COMPLETO (aproximadamente 4 semanas)**.
 
-    Basándote en este menú, y teniendo en cuenta las recomendaciones de la OMS para niños de 1 a 5 años,
-    necesito que me proporciones:
-    1. Todas las cenas de Lunes a Viernes para complementar las comidas de la guardería.
-    2. Todas las comidas Y cenas para los Sábados, Domingos y días festivos que identifiques o que yo te indique.
-       (Por ahora, asume fines de semana estándar, a menos que el menú indique festivos).
+--- MENÚ GUARDERÍA ---
+${menuTextFromPDF}
+--- FIN MENÚ GUARDERÍA ---
 
-    Consideraciones cruciales:
-    - ROTACIÓN DE PROTEÍNAS: Asegura una buena variedad y rotación de proteínas (pescado, pollo, carne roja magra, huevo, legumbres) a lo largo de la semana, evitando repetir la proteína principal del almuerzo de la guardería en la cena del mismo día.
-    - GRUPOS DE ALIMENTOS: Cada comida sugerida debe ser equilibrada, incluyendo una fuente de proteína, carbohidratos complejos (ej. patata, arroz integral, pasta, quinoa) y verduras/hortalizas. Incluye frutas como postre o parte de la merienda si lo ves conveniente.
-    - RECOMENDACIONES OMS (1-5 años): Porciones adecuadas, variedad, limitar azúcares añadidos, sal y grasas saturadas. Prioriza alimentos frescos y naturales.
-    - FORMATO DE RESPUESTA: Devuelve la información de forma clara, idealmente día por día. Por ejemplo:
+Basándote en este menú (que puede ser la base para cada semana del mes), y teniendo en cuenta las recomendaciones de la OMS para niños de 1 a 5 años, necesito que me proporciones:
+
+1.  **Sugerencias de Cenas de Lunes a Viernes para cada una de las 4 semanas del mes.** Intenta variar las sugerencias entre las semanas para ofrecer una mayor diversidad mensual, aunque el almuerzo de la guardería se repita semanalmente.
+2.  **Sugerencias de Comidas Y Cenas para todos los Sábados y Domingos de cada una de las 4 semanas del mes.**
+3.  **Identificación de Días Festivos:** Si el menú de la guardería indica algún día festivo específico, genera comida y cena para ese día. Si no se indican festivos, por favor, estructura la respuesta como si no hubiera festivos adicionales a los fines de semana, pero menciona que se podrían añadir si el usuario los especifica.
+
+Consideraciones cruciales para TODAS las sugerencias:
+-   **ROTACIÓN DE PROTEÍNAS MENSUAL Y SEMANAL:** Asegura una excelente variedad y rotación de proteínas (pescado blanco, pescado azul, pollo, pavo, ternera magra, cerdo magro, huevo, legumbres como lentejas, garbanzos, alubias) a lo largo de cada semana y también a lo largo del mes. Evita repetir la proteína principal del almuerzo de la guardería en la cena del mismo día. Intenta que no se repitan las mismas cenas exactas en la misma semana del mes siguiente si es posible.
+-   **GRUPOS DE ALIMENTOS COMPLETOS:** Cada comida sugerida (almuerzo o cena) debe ser equilibrada, incluyendo:
+    *   Una fuente de proteína principal.
+    *   Carbohidratos complejos (ej. patata, boniato, arroz integral, pasta integral, quinoa, cuscús, pan integral).
+    *   Verduras y/o hortalizas variadas (crudas o cocidas, diferentes colores).
+    *   Grasas saludables (ej. aceite de oliva virgen extra, aguacate en pequeñas cantidades).
+    *   Fruta fresca de postre o como parte de una merienda (si quieres sugerir meriendas, es opcional pero bienvenido).
+-   **RECOMENDACIONES OMS (1-5 años):** Porciones adecuadas al tamaño del niño (no forzar), mucha variedad, limitar azúcares añadidos (evitar zumos procesados, bollería, galletas azucaradas), reducir la sal (usar hierbas aromáticas para sazonar), evitar grasas saturadas y trans. Prioriza alimentos frescos, de temporada y mínimamente procesados.
+-   **FORMATO DE RESPUESTA CLARO Y ESTRUCTURADO POR SEMANAS:**
+    Devuelve la información organizada por semanas. Ejemplo:
+
+    SEMANA 1:
       LUNES:
-        Cena: [Sugerencia de cena]
+        Cena: [Sugerencia de cena para Lunes, Semana 1]
       MARTES:
-        Cena: [Sugerencia de cena]
+        Cena: [Sugerencia de cena para Martes, Semana 1]
       ...
       SÁBADO:
-        Comida: [Sugerencia de comida]
-        Cena: [Sugerencia de cena]
+        Comida: [Sugerencia de comida para Sábado, Semana 1]
+        Cena: [Sugerencia de cena para Sábado, Semana 1]
       DOMINGO:
-        Comida: [Sugerencia de comida]
-        Cena: [Sugerencia de cena]
+        Comida: [Sugerencia de comida para Domingo, Semana 1]
+        Cena: [Sugerencia de cena para Domingo, Semana 1]
 
-    Por favor, sé específico con los platos sugeridos. Si el menú de la guardería es semanal y se repite, genera las sugerencias para una semana típica. Si es mensual, intenta cubrir todo el mes.
-    Si el menú de la guardería no es claro o falta información, haz tu mejor esfuerzo para complementarlo lógicamente.
+    SEMANA 2:
+      LUNES:
+        Cena: [Sugerencia de cena para Lunes, Semana 2, idealmente diferente a Semana 1]
+      ... y así sucesivamente para las 4 semanas.
+
+Por favor, sé específico con los platos sugeridos (ej. "Crema de calabacín con picatostes y huevo duro rallado" en lugar de "Crema y proteína").
+Si el menú de la guardería no es claro o falta información, haz tu mejor esfuerzo para complementarlo lógicamente basándote en una dieta infantil saludable. Considera que el menú de la guardería es el almuerzo de Lunes a Viernes.
   `;
   // -------------------------------------------------------
 
